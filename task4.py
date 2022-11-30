@@ -1,20 +1,31 @@
-import csv
 import json
 
 file = "input.csv"
 
+# TODO реализовать конвертер из csv в json
 
-def csv_to_list_dict(file_):
 
+def csv_to_list_dict():
+
+    rows = []
     list_ = []
+    dict_ = {}
 
-    with open(file_, encoding='utf-8') as f:
-        csvreader = csv.DictReader(f)
-        for row in csvreader:
-            list_.append(row)
+    with open(file) as source:
+
+        for line in source:
+            rows.append(line.strip('\n'))
+
+        headers = rows.pop(0).split(",")
+
+        for string in rows:
+            row = string.split(",")
+            for header in headers:
+                dict_.fromkeys(header, row.pop(0))
+                list_.append(dict_)
+                dict_.clear()
 
     return list_
-    # TODO реализовать конвертер из csv в json
 
 
-print(json.dumps(csv_to_list_dict(file), indent=4))
+print(json.dumps(csv_to_list_dict(), indent=4))
